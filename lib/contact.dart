@@ -1,3 +1,4 @@
+import 'package:distress_app/home.dart';
 import 'package:flutter/material.dart';
 import 'next.dart';
 
@@ -19,7 +20,7 @@ class EmergencyContact extends StatelessWidget{
           ),
           ElevatedButton(
               onPressed: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context)=> Next()));
+                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=> Home()),(Route<dynamic> route) => false);
               },
               child: Text('NEXT'))
         ],
