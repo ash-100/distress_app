@@ -1,4 +1,4 @@
-import 'package:distress_app/contact.dart';
+import 'contact.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
