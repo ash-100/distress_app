@@ -1,5 +1,6 @@
+import 'package:distress_app/fire.dart';
+import 'package:distress_app/medicalEmergency.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 var emergencyList=['Medical Emergency','Fire','Other'];
 var i=0;
@@ -22,7 +23,7 @@ class Home extends StatelessWidget{
                   child: Text(emergencyList[index]),
                 ),
                 onTap: (){
-                  sendMessage(index);
+                  sendMessage(context,index);
                 },
               ),
             );
@@ -66,12 +67,14 @@ class Home extends StatelessWidget{
   }
 }
 
-void sendMessage(int index){
+void sendMessage(BuildContext context,int index){
   if(index==0){
     // Functionality to be added for medical emergency
+    Navigator.push(context, MaterialPageRoute(builder: (context)=> MedicalEmergency()));
   }
   else if(index==1){
     // Functionality to be added for fire
+    Navigator.push(context, MaterialPageRoute(builder: (context)=> Fire()));
   }
   else if(index==2){
     // Functionality to be added for other cases
