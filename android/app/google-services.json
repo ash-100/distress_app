@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "938777725296",
+    "project_id": "distress-app-13801",
+    "storage_bucket": "distress-app-13801.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:938777725296:android:1f78bfcb0f857c842427b5",
+        "android_client_info": {
+          "package_name": "com.example.distress_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "938777725296-iad8rke2kcs9gc2v7pkhfkic2k1caoul.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.distress_app",
+            "certificate_hash": "7bd28d3614cef13c7b54ce3f3de16a9fcda2a4bc"
+          }
+        },
+        {
+          "client_id": "938777725296-a3kgep3fbv0nrib11ag6p42rf20dmimn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAnG5eiaiyj2k7Xmzcl18zOtokkdu2p8bg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "938777725296-a3kgep3fbv0nrib11ag6p42rf20dmimn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
