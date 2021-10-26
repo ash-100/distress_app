@@ -2,41 +2,47 @@ import 'contact.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class Address extends StatelessWidget {
+class Address extends StatefulWidget {
+  final Function? changePage;
+  Address({this.changePage});
+
+  @override
+  State<Address> createState() => _AddressState();
+}
+
+class _AddressState extends State<Address> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Address'),
-      ),
+      backgroundColor: Colors.white,
       body: Container(
         //height: MediaQuery.of(context).size.height,
-        padding: EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
         child: Column(
           children: [
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
-            TextField(
+            const TextField(
               decoration: InputDecoration(
                 labelText: 'Address 1',
                 hintText: 'Enter Address',
                 border: OutlineInputBorder(),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
-            TextField(
+            const TextField(
               decoration: InputDecoration(
                   labelText: 'Address 2',
                   hintText: 'Enter Address',
                   border: OutlineInputBorder()),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
-            TextField(
+            const TextField(
               decoration: InputDecoration(
                   labelText: 'Address 3',
                   hintText: 'Enter Address',
@@ -47,12 +53,16 @@ class Address extends StatelessWidget {
                 alignment: FractionalOffset.bottomCenter,
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => EmergencyContact()));
+                    setState(() {
+                      widget.changePage!(2);
+                    });
+
+                    // Navigator.push(
+                    //     context,
+                    //     MaterialPageRoute(
+                    //         builder: (context) => EmergencyContact()));
                   },
-                  child: Text('NEXT'),
+                  child: const Text('NEXT'),
                 ),
               ),
             ),

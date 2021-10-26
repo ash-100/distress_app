@@ -1,13 +1,18 @@
+import 'package:distress_app/services/auth.dart';
 import 'home.dart';
 import 'package:flutter/material.dart';
-import 'next.dart';
 
 class EmergencyContact extends StatelessWidget {
+  final Function? changePage;
+  EmergencyContact({this.changePage});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Emergency Contact'),
+          title: const Text('Emergency Contact'),
+          elevation: 0.0,
+          backgroundColor: Colors.transparent,
         ),
         body: Column(
           children: [
@@ -19,13 +24,18 @@ class EmergencyContact extends StatelessWidget {
                   }),
             ),
             ElevatedButton(
-                onPressed: () {
-                  Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(builder: (context) => Home()),
-                      (Route<dynamic> route) => false);
+                onPressed: () async {
+                  try {
+                    dynamic result = await AuthService().googleSignIn();
+                  } catch (e) {
+                    print(e);
+                  }
+                  // Navigator.pushAndRemoveUntil(
+                  //     context,
+                  //     MaterialPageRoute(builder: (context) => Home()),
+                  //     (Route<dynamic> route) => false);
                 },
-                child: Text('NEXT'))
+                child: const Text('Register'))
           ],
         ));
   }
@@ -34,27 +44,27 @@ class EmergencyContact extends StatelessWidget {
 Widget row(index) {
   return Card(
     child: Container(
-      padding: EdgeInsets.all(10),
+      padding: const EdgeInsets.all(10),
       child: Column(
         children: [
           Text(
             'Emergency Contact - ' + (index + 1).toString(),
             textAlign: TextAlign.left,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 18,
             ),
           ),
-          TextField(
+          const TextField(
             decoration: InputDecoration(
               labelText: 'Name',
               hintText: 'Enter your name',
               border: OutlineInputBorder(),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
-          TextField(
+          const TextField(
             decoration: InputDecoration(
               labelText: 'Mobile Number',
               hintText: 'Enter your mobile number',
@@ -62,10 +72,10 @@ Widget row(index) {
             ),
             maxLines: 1,
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
-          TextField(
+          const TextField(
             decoration: InputDecoration(
               labelText: 'Relationship',
               hintText: 'Enter your relationship',
