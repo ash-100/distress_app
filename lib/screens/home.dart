@@ -1,6 +1,7 @@
 import 'fire.dart';
 import 'medicalEmergency.dart';
 import 'package:flutter/material.dart';
+import 'otherEmergencies.dart';
 
 var emergencyList = ['Medical Emergency', 'Fire', 'Other'];
 var i = 0;
@@ -78,6 +79,7 @@ void sendMessage(BuildContext context, int index) {
     Navigator.push(context, MaterialPageRoute(builder: (context) => Fire()));
   } else if (index == 2) {
     // Functionality to be added for other cases
+    Navigator.push(context, MaterialPageRoute(builder: (context) => OtherEmergencies()));
   } else {
     // Error
   }
