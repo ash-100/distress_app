@@ -2,6 +2,7 @@
 
 import 'package:distress_app/services/auth.dart';
 import 'package:flutter/material.dart';
+import 'package:distress_app/screens/userDetails.dart';
 
 class Register extends StatefulWidget {
   Register({this.changePage});
@@ -100,10 +101,12 @@ class _RegisterState extends State<Register> {
                         widget.changePage!(1);
                       },
                       child: Center(
-                          child: Text(
-                        "Create Account",
-                        style: TextStyle(color: Color.fromRGBO(49, 39, 79, .6)),
-                      )),
+                        child: Text(
+                          "Create Account",
+                          style:
+                              TextStyle(color: Color.fromRGBO(49, 39, 79, .6)),
+                        ),
+                      ),
                     ),
                     Expanded(
                       child: Container(),
