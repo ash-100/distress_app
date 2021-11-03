@@ -2,7 +2,6 @@
 
 import 'package:distress_app/services/auth.dart';
 import 'package:flutter/material.dart';
-import 'package:distress_app/screens/userDetails.dart';
 
 class Register extends StatefulWidget {
   Register({this.changePage});

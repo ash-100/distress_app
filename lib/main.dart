@@ -4,7 +4,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 import 'wrapper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:distress_app/screens/userDetails.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,7 +21,7 @@ class MyApp extends StatelessWidget {
       child: const MaterialApp(
         debugShowCheckedModeBanner: false,
         //home: SplashScreen(),
-        home: userDetails(),
+        home: Wrapper(),
       ),
     );
   }

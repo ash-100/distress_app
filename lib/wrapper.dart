@@ -2,7 +2,7 @@ import 'package:distress_app/screens/address.dart';
 import 'package:distress_app/screens/contact.dart';
 import 'package:distress_app/screens/home.dart';
 import 'package:distress_app/screens/register.dart';
-import 'package:distress_app/screens/userDetails.dart';
+import 'package:distress_app/screens/userdetails.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -28,7 +28,7 @@ class _WrapperState extends State<Wrapper> {
     final user = Provider.of<User?>(context);
     if (user == null) {
       return PageView(controller: _controller, children: [
-        userDetails(changePage: changePage),
+        userdetails(changePage: changePage),
         Register(changePage: changePage),
         Address(changePage: changePage),
         EmergencyContact(changePage: changePage),
