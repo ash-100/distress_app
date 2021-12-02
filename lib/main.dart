@@ -1,4 +1,5 @@
 import 'package:distress_app/screens/address.dart';
+import 'package:distress_app/screens/home.dart';
 import 'package:distress_app/services/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -19,10 +20,10 @@ class MyApp extends StatelessWidget {
     return StreamProvider<User?>.value(
       value: AuthService().user,
       initialData: null,
-      child: const MaterialApp(
+      child:  MaterialApp(
         debugShowCheckedModeBanner: false,
         //home: SplashScreen(),
-        home: Wrapper(),
+        home: Home(),
       ),
     );
   }

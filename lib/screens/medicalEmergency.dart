@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 
 class MedicalEmergency extends StatelessWidget {
   @override
@@ -22,6 +26,15 @@ class MedicalEmergency extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.all(20),
               child: ElevatedButton(
+                child: Text('Send Request'),
+                onPressed: sendRequest,
+              ),
+            ),
+          ),
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.all(20),
+              child: ElevatedButton(
                 child: Text('Cancel Request'),
                 onPressed: () {
                   // Cancel request for help
@@ -32,5 +45,23 @@ class MedicalEmergency extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  void sendRequest() async{
+    Position position=await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    String latitude, longitude;
+    latitude=position.latitude.toString();
+    longitude=position.longitude.toString();
+
+
+    var firebaseUser= FirebaseAuth.instance.currentUser;
+    var firestoreInstance= FirebaseFirestore.instance;
+     firestoreInstance.collection('users').doc(firebaseUser!.uid).set({
+       "name":firebaseUser.displayName,
+       "email":firebaseUser.email,
+       "latitude":latitude,
+       "longitude":longitude,
+       "help":"Medical Emergency"
+     });
   }
 }

@@ -40,6 +40,8 @@ dependencies:
   fluttertoast:
   provider: ^6.0.1
   simple_animations: ^4.0.1
+  geolocator:
+
 
 dev_dependencies:
   flutter_test:
