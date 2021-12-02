@@ -1,5 +1,12 @@
 import 'package:flutter/material.dart';
 
+class Contact {
+  String? name;
+  String? phone;
+  String? relation;
+  Contact({this.name, this.phone, this.relation});
+}
+
 class UserData {
   String? name;
   String? phone;
@@ -8,9 +15,9 @@ class UserData {
   String? address3;
   String? bloodGroup;
   String? email;
-  String? emergencyContact1;
-  String? emergencyContact2;
-  String? emergencyContact3;
+  Contact? emergencyContact1;
+  Contact? emergencyContact2;
+  Contact? emergencyContact3;
   UserData(
       {this.name,
       this.phone,

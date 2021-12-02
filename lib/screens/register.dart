@@ -33,7 +33,7 @@ class _RegisterState extends State<Register> {
                     child: Container(
                       decoration: BoxDecoration(
                           image: DecorationImage(
-                              image: AssetImage('assets/background.png'),
+                              image: AssetImage('assets/images/background.png'),
                               fit: BoxFit.fill)),
                     ),
                   ),
@@ -43,7 +43,8 @@ class _RegisterState extends State<Register> {
                     child: Container(
                       decoration: BoxDecoration(
                           image: DecorationImage(
-                              image: AssetImage('assets/background-2.png'),
+                              image:
+                                  AssetImage('assets/images/background-2.png'),
                               fit: BoxFit.fill)),
                     ),
                   )

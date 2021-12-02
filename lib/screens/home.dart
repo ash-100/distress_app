@@ -1,3 +1,5 @@
+import 'package:distress_app/services/auth.dart';
+
 import 'fire.dart';
 import 'medicalEmergency.dart';
 import 'package:flutter/material.dart';
@@ -69,17 +71,19 @@ class Home extends StatelessWidget {
   }
 }
 
-void sendMessage(BuildContext context, int index) {
+void sendMessage(BuildContext context, int index) async {
   if (index == 0) {
     // Functionality to be added for medical emergency
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => MedicalEmergency()));
+    await AuthService().logOut();
+    // Navigator.push(
+    //     context, MaterialPageRoute(builder: (context) => MedicalEmergency()));
   } else if (index == 1) {
     // Functionality to be added for fire
     Navigator.push(context, MaterialPageRoute(builder: (context) => Fire()));
   } else if (index == 2) {
     // Functionality to be added for other cases
-    Navigator.push(context, MaterialPageRoute(builder: (context) => OtherEmergencies()));
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => OtherEmergencies()));
   } else {
     // Error
   }

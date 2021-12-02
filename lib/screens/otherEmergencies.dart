@@ -50,7 +50,7 @@ class OtherEmergencies extends StatelessWidget {
             IconButton(
               icon: Image.asset('assets/images/microphone.png'),
               iconSize: 70,
-              onPressed: (){
+              onPressed: () {
                 // Recording voice
               },
             ),
@@ -59,7 +59,7 @@ class OtherEmergencies extends StatelessWidget {
                 alignment: FractionalOffset.bottomCenter,
                 child: ElevatedButton(
                   child: Text('Send Request'),
-                  onPressed: (){
+                  onPressed: () {
                     // Functionality to be added
                   },
                 ),
@@ -69,7 +69,7 @@ class OtherEmergencies extends StatelessWidget {
               alignment: FractionalOffset.bottomCenter,
               child: ElevatedButton(
                 child: Text('Cancel Request'),
-                onPressed: (){
+                onPressed: () {
                   // Functionality to be added
                 },
               ),
