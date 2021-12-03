@@ -25,18 +25,18 @@ class DatabaseService {
       'address3': address3,
       'emergencyContact1': {
         'name': emergencyContact1!.name,
-        'phone': emergencyContact1!.phone,
-        'relation': emergencyContact1!.relation
+        'phone': emergencyContact1.phone,
+        'relation': emergencyContact1.relation
       },
       'emergencyContact2': {
         'name': emergencyContact2!.name,
-        'phone': emergencyContact2!.phone,
-        'relation': emergencyContact2!.relation
+        'phone': emergencyContact2.phone,
+        'relation': emergencyContact2.relation
       },
       'emergencyContact3': {
         'name': emergencyContact3!.name,
-        'phone': emergencyContact3!.phone,
-        'relation': emergencyContact3!.relation
+        'phone': emergencyContact3.phone,
+        'relation': emergencyContact3.relation
       },
       'bloodGroup': bloodGroup,
     });
