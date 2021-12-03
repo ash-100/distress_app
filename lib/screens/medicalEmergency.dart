@@ -56,7 +56,7 @@ class MedicalEmergency extends StatelessWidget {
 
     var firebaseUser= FirebaseAuth.instance.currentUser;
     var firestoreInstance= FirebaseFirestore.instance;
-     firestoreInstance.collection('users').doc(firebaseUser!.uid).set({
+     firestoreInstance.collection('users-help-required').doc(firebaseUser!.uid).set({
        "name":firebaseUser.displayName,
        "email":firebaseUser.email,
        "latitude":latitude,
