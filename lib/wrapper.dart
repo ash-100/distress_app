@@ -2,6 +2,7 @@ import 'package:distress_app/models.dart';
 import 'package:distress_app/screens/address.dart';
 import 'package:distress_app/screens/contact.dart';
 import 'package:distress_app/screens/home.dart';
+import 'package:distress_app/screens/homeAdmin.dart';
 import 'package:distress_app/screens/register.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

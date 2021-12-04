@@ -1,15 +1,27 @@
+import 'package:distress_app/services/auth.dart';
 import 'package:flutter/services.dart';
+import 'package:geolocator/geolocator.dart';
 import 'fire.dart';
 import 'medicalEmergency.dart';
 import 'package:flutter/material.dart';
 import 'otherEmergencies.dart';
-import 'package:geolocator/geolocator.dart';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 var emergencyList = ['Medical Emergency', 'Fire', 'Other'];
 var i = 0;
 
-class Home extends StatelessWidget {
+var firestoreInstance=FirebaseFirestore.instance;
+
+var collection=firestoreInstance.collection('users-help-required');
+
+class homeAdmin extends StatefulWidget {
+  @override
+  State<homeAdmin> createState() => _homeAdminState();
+}
+
+class _homeAdminState extends State<homeAdmin>{
   Future enableLocation(BuildContext context) async {
     bool serviceEnabled;
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
@@ -97,6 +109,58 @@ class Home extends StatelessWidget {
 
         });
   }
+
+  int selectedIndex=0;
+  void onItemTapped(int index){
+    setState(() {
+      selectedIndex=index;
+    });
+  }
+  List<Widget> pages=<Widget>[GridView.builder(
+    padding: EdgeInsets.all(5),
+    gridDelegate:
+    const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+    itemCount: 3,
+    itemBuilder: (BuildContext context, int index) {
+      return Card(
+        child: InkWell(
+          child: Center(
+            child: Text(emergencyList[index]),
+          ),
+          onTap: () {
+            sendMessage(context, index);
+          },
+        ),
+      );
+    },
+  ),
+    StreamBuilder<QuerySnapshot>(
+      stream: collection.snapshots(),
+      builder: (context, snapshot){
+        if(!snapshot.hasData){
+          return Center(
+            child: Text('No requests'),
+          );
+        }
+        else{
+          return ListView(
+            children: snapshot.data!.docs.map((doc) {
+              return Card(
+                child: Column(
+                  children: [
+                    Text(doc['name']),
+                    Text(doc['email']),
+                    Text(doc['help'])
+                  ],
+                ),
+              );
+            }).toList(),
+          );
+        }
+      },
+    )
+
+  ];
   @override
   Widget build(BuildContext context) {
     enableLocation(context);
@@ -104,24 +168,23 @@ class Home extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Home'),
       ),
-      body: GridView.builder(
-        padding: EdgeInsets.all(5),
-        gridDelegate:
-        const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-        itemCount: 3,
-        itemBuilder: (BuildContext context, int index) {
-          return Card(
-            child: InkWell(
-              child: Center(
-                child: Text(emergencyList[index]),
-              ),
-              onTap: () {
-                sendMessage(context, index);
-              },
-            ),
-          );
-        },
+      bottomNavigationBar: BottomNavigationBar(
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home'
+          ),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.list),
+              label: 'Help Requests'
+          )
+        ],
+        currentIndex: selectedIndex,
+        onTap: onItemTapped,
       ),
+      body:Center(
+        child: pages.elementAt(selectedIndex), //New
+      ) ,
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
@@ -160,18 +223,23 @@ class Home extends StatelessWidget {
   }
 }
 
-void sendMessage(BuildContext context, int index) {
+void sendMessage(BuildContext context, int index) async {
   if (index == 0) {
     // Functionality to be added for medical emergency
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => MedicalEmergency()));
+    //await AuthService().logOut();
+     Navigator.push(
+         context, MaterialPageRoute(builder: (context) => MedicalEmergency()));
   } else if (index == 1) {
     // Functionality to be added for fire
     Navigator.push(context, MaterialPageRoute(builder: (context) => Fire()));
   } else if (index == 2) {
     // Functionality to be added for other cases
-    Navigator.push(context, MaterialPageRoute(builder: (context) => OtherEmergencies()));
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => OtherEmergencies()));
   } else {
     // Error
   }
 }
+
+
+
