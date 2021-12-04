@@ -139,7 +139,7 @@ class _homeAdminState extends State<homeAdmin>{
       builder: (context, snapshot){
         if(!snapshot.hasData){
           return Center(
-            child: Text('No requests'),
+            child: CircularProgressIndicator(),
           );
         }
         else{
