@@ -246,6 +246,13 @@ class _homeAdminState extends State<homeAdmin>{
                 Navigator.pop(context);
               },
             ),
+            ListTile(
+              title: Text('Sign Out'),
+              onTap: () {
+                // Must be redirected to profile page
+                Navigator.pop(context);
+              },
+            ),
           ],
         ),
       ),
