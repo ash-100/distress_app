@@ -4,6 +4,7 @@ import 'package:distress_app/screens/contact.dart';
 import 'package:distress_app/screens/home.dart';
 import 'package:distress_app/screens/homeAdmin.dart';
 import 'package:distress_app/screens/register.dart';
+import 'package:distress_app/screens/userDetails.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';

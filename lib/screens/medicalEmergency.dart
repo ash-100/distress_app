@@ -37,7 +37,7 @@ class MedicalEmergency extends StatelessWidget {
               child: ElevatedButton(
                 child: Text('Cancel Request'),
                 onPressed: () {
-                  // Cancel request for help
+                  FirebaseFirestore.instance.collection('users-help-required').doc(FirebaseAuth.instance.currentUser!.email).delete();
                 },
               ),
             ),
@@ -56,7 +56,7 @@ class MedicalEmergency extends StatelessWidget {
 
     var firebaseUser= FirebaseAuth.instance.currentUser;
     var firestoreInstance= FirebaseFirestore.instance;
-    firestoreInstance.collection('users-help-required').doc(firebaseUser!.uid).set({
+    firestoreInstance.collection('users-help-required').doc(firebaseUser!.email).set({
       "name":firebaseUser.displayName,
       "email":firebaseUser.email,
       "latitude":latitude,

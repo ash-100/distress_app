@@ -1,3 +1,4 @@
+import 'package:distress_app/screens/userDetails.dart';
 import 'package:distress_app/services/auth.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
@@ -12,8 +13,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 var emergencyList = ['Medical Emergency', 'Fire', 'Other'];
 var i = 0;
 
-var firestoreInstance=FirebaseFirestore.instance;
 
+var firestoreInstance=FirebaseFirestore.instance;
 var collection=firestoreInstance.collection('users-help-required');
 
 class homeAdmin extends StatefulWidget {
@@ -145,14 +146,43 @@ class _homeAdminState extends State<homeAdmin>{
         else{
           return ListView(
             children: snapshot.data!.docs.map((doc) {
-              return Card(
-                child: Column(
-                  children: [
-                    Text(doc['name']),
-                    Text(doc['email']),
-                    Text(doc['help'])
-                  ],
+              var name="",email="",help="";
+              if(doc.data().toString().contains('name'))
+              name =doc['name'];
+              if(doc.data().toString().contains('email'))
+              email=doc['email'];
+              if(doc.data().toString().contains('help'))
+              help=doc['help'];
+              return InkWell(
+                child: Card(
+                    child: Column(
+                      children: [
+                        Text(help,
+                          style: TextStyle(
+                              fontSize: 18
+                          ),),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text('Name : $name'),
+                        ),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text('Email : $email'),
+                        ),
+                        ElevatedButton(
+                            onPressed: (){
+                              //Delete the document from firestore
+                              collection.doc(email.trim()).delete();
+                            },
+                            child: Text(
+                                'Help sent'
+                            ))
+                      ],
+                    )
                 ),
+                onTap: (){
+                  Navigator.of(context).push(MaterialPageRoute(builder:(context)=>userDetails(email)));
+                },
               );
             }).toList(),
           );
