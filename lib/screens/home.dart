@@ -5,19 +5,22 @@ import 'package:flutter/material.dart';
 import 'otherEmergencies.dart';
 import 'package:geolocator/geolocator.dart';
 
-
 var emergencyList = ['Medical Emergency', 'Fire', 'Other'];
 var i = 0;
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
+  @override
+  State<Home> createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
   Future enableLocation(BuildContext context) async {
     bool serviceEnabled;
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
       enableLocationAlert(context);
       return Future.error('Location services are disabled.');
-    }
-    else{
+    } else {
       _getGeoLocationPermission(context);
     }
   }
@@ -25,9 +28,9 @@ class Home extends StatelessWidget {
   Future _getGeoLocationPermission(BuildContext context) async {
     LocationPermission permission;
     permission = await Geolocator.checkPermission();
-    if(permission==LocationPermission.denied){
+    if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied){
+      if (permission == LocationPermission.denied) {
         locationAlert(context);
       }
     }
@@ -38,19 +41,23 @@ class Home extends StatelessWidget {
     }
   }
 
-  void locationAlert(BuildContext context){
-    showDialog(context: context,
+  void locationAlert(BuildContext context) {
+    showDialog(
+        context: context,
         barrierDismissible: false,
-        builder: (BuildContext context){
+        builder: (BuildContext context) {
           return AlertDialog(
             title: Text('Enable Location'),
-            content: Text('You must enable location access in order to use this app'),
+            content: Text(
+                'You must enable location access in order to use this app'),
             actions: [
               TextButton(
-                  onPressed:() async{
+                  onPressed: () async {
                     await Geolocator.requestPermission();
-                    LocationPermission locationPermission=await Geolocator.checkPermission();
-                    if(locationPermission==LocationPermission.whileInUse || locationPermission==LocationPermission.always){
+                    LocationPermission locationPermission =
+                        await Geolocator.checkPermission();
+                    if (locationPermission == LocationPermission.whileInUse ||
+                        locationPermission == LocationPermission.always) {
                       Navigator.of(context).pop(true);
                     }
                   },
@@ -63,27 +70,28 @@ class Home extends StatelessWidget {
                   child: Text('Exit'))
             ],
           );
-
         });
   }
-  void enableLocationAlert(BuildContext context){
-    showDialog(context: context,
+
+  void enableLocationAlert(BuildContext context) {
+    showDialog(
+        context: context,
         barrierDismissible: false,
-        builder: (BuildContext context){
+        builder: (BuildContext context) {
           return AlertDialog(
             title: Text('Enable Location Service'),
-            content: Text('You must enable location access in order to use this app'),
+            content: Text(
+                'You must enable location access in order to use this app'),
             actions: [
               TextButton(
-                  onPressed:() async{
+                  onPressed: () async {
                     //await Geolocator.openLocationSettings();
                     await Geolocator.openLocationSettings();
-                    bool service= await Geolocator.isLocationServiceEnabled();
-                    if(service){
+                    bool service = await Geolocator.isLocationServiceEnabled();
+                    if (service) {
                       Navigator.of(context).pop(true);
                       _getGeoLocationPermission(context);
                     }
-
                   },
                   child: Text('Enable')),
               TextButton(
@@ -94,9 +102,9 @@ class Home extends StatelessWidget {
                   child: Text('Exit'))
             ],
           );
-
         });
   }
+
   @override
   Widget build(BuildContext context) {
     enableLocation(context);
@@ -107,7 +115,7 @@ class Home extends StatelessWidget {
       body: GridView.builder(
         padding: EdgeInsets.all(5),
         gridDelegate:
-        const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+            const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
         itemCount: 3,
         itemBuilder: (BuildContext context, int index) {
           return Card(
@@ -177,7 +185,8 @@ void sendMessage(BuildContext context, int index) {
     Navigator.push(context, MaterialPageRoute(builder: (context) => Fire()));
   } else if (index == 2) {
     // Functionality to be added for other cases
-    Navigator.push(context, MaterialPageRoute(builder: (context) => OtherEmergencies()));
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => OtherEmergencies()));
   } else {
     // Error
   }

@@ -42,7 +42,7 @@ dependencies:
   simple_animations: ^4.0.1
   geolocator:
   url_launcher:
-
+  firebase_messaging:
 dev_dependencies:
   flutter_test:
     sdk: flutter
