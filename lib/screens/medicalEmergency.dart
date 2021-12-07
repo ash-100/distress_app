@@ -16,15 +16,34 @@ class MedicalEmergency extends StatelessWidget {
           Expanded(
             child: SizedBox(
               height: MediaQuery.of(context).size.height,
-              child: Text(
-                'Safety Procedures',
-                style: TextStyle(fontSize: 25),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  ListTile(
+                    leading: Icon(Icons.arrow_right_outlined),
+                    title:Text('Safety first - Make sure there is no danger to you and victim.') ,
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.arrow_right_outlined),
+                    title: Text('Check response - Is the person asleep or unresponsive – Call, Shake, Shout'),
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.arrow_right_outlined),
+                    title: Text('Seek help - Shout or call for help if you are alone but do not leave the person unattended.'),
+                  ),
+                  ListTile(
+                      leading: Icon(Icons.arrow_right_outlined),
+                    title: Text('Quick assessment of victim’s condition - Check consciousness and breathing (look, listen, feel). Look for bleeding and other life threatening conditions')
+                  )
+
+
+                ],
               ),
             ),
           ),
           Center(
             child: Padding(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(5),
               child: ElevatedButton(
                 child: Text('Send Request'),
                 onPressed: sendRequest,
@@ -33,7 +52,7 @@ class MedicalEmergency extends StatelessWidget {
           ),
           Center(
             child: Padding(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(5),
               child: ElevatedButton(
                 child: Text('Cancel Request'),
                 onPressed: () {

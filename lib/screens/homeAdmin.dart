@@ -10,7 +10,8 @@ import 'otherEmergencies.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-var emergencyList = ['Medical Emergency', 'Fire', 'Other'];
+//var emergencyList = ['Medical Emergency', 'Fire', 'Other'];
+var emergencyList = ['Medical Emergency', 'Fire'];
 var i = 0;
 
 
@@ -121,7 +122,7 @@ class _homeAdminState extends State<homeAdmin>{
     padding: EdgeInsets.all(5),
     gridDelegate:
     const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-    itemCount: 3,
+    itemCount: 2,
     itemBuilder: (BuildContext context, int index) {
       return Card(
         child: InkWell(

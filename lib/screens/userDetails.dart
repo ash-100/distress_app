@@ -51,37 +51,166 @@ class _userDetailsState extends State<userDetails> {
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text('Phone'),
-                      Text(details['phone'].toString()),
-                      Text('Address1'),
-                      Text(details['address1'].toString()),
-                      Text('Address2'),
-                      Text(details['address2'].toString()),
-                      Text('Address3'),
-                      Text(details['address3'].toString()),
-                      Text('Blood Group'),
-                      Text(details['bloodGroup'].toString()),
-                      Text('Emergency Contact - 1'),
-                      Text('Name'),
-                      Text(details['emergencyContact1']['name'].toString()),
-                      Text('Phone'),
-                      Text(details['emergencyContact1']['phone'].toString()),
-                      Text('Relation'),
-                      Text(details['emergencyContact1']['relation'].toString()),
-                      Text('Emergency Contact - 2'),
-                      Text('Name'),
-                      Text(details['emergencyContact2']['name'].toString()),
-                      Text('Phone'),
-                      Text(details['emergencyContact2']['phone'].toString()),
-                      Text('Relation'),
-                      Text(details['emergencyContact2']['relation'].toString()),
-                      Text('Emergency Contact - 3'),
-                      Text('Name'),
-                      Text(details['emergencyContact3']['name'].toString()),
-                      Text('Phone'),
-                      Text(details['emergencyContact3']['phone'].toString()),
-                      Text('Relation'),
-                      Text(details['emergencyContact3']['relation'].toString()),
+                      Container(
+                        width: double.infinity,
+                        decoration:BoxDecoration(
+                          border: Border.all(
+                            color: Colors.blue,
+                            width: 3
+                          ),
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10)
+                          )
+                        ) ,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text('Phone',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold
+                              ),
+                            ),
+                            Text(details['phone'].toString()),
+                            Text('Address1',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold
+                              ),),
+                            Text(details['address1'].toString()),
+                            Text('Address2',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold
+                              ),),
+                            Text(details['address2'].toString()),
+                            Text('Address3',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold
+                              ),),
+                            Text(details['address3'].toString()),
+                            Text('Blood Group',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold
+                              ),),
+                            Text(details['bloodGroup'].toString()),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Container(
+                        width: double.infinity,
+                        decoration:BoxDecoration(
+                            border: Border.all(
+                                color: Colors.blue,
+                                width: 3
+                            ),
+                            borderRadius: BorderRadius.all(
+                                Radius.circular(10)
+                            )
+                        ) ,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text('Emergency Contact - 1',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold
+                              ),),
+                            Text('Name',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold
+                              ),),
+                            Text(details['emergencyContact1']['name'].toString()),
+                            Text('Phone',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold
+                              ),),
+                            Text(details['emergencyContact1']['phone'].toString()),
+                            Text('Relation',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold
+                              ),),
+                            Text(details['emergencyContact1']['relation'].toString()),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Container(
+                        width: double.infinity,
+                        decoration:BoxDecoration(
+                            border: Border.all(
+                                color: Colors.blue,
+                                width: 3
+                            ),
+                            borderRadius: BorderRadius.all(
+                                Radius.circular(10)
+                            )
+                        ) ,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text('Emergency Contact - 2',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold
+                              ),),
+                            Text('Name',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold
+                              ),),
+                            Text(details['emergencyContact2']['name'].toString()),
+                            Text('Phone',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold
+                              ),),
+                            Text(details['emergencyContact2']['phone'].toString()),
+                            Text('Relation',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold
+                              ),),
+                            Text(details['emergencyContact2']['relation'].toString()),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Container(
+                        width: double.infinity,
+                        decoration:BoxDecoration(
+                            border: Border.all(
+                                color: Colors.blue,
+                                width: 3
+                            ),
+                            borderRadius: BorderRadius.all(
+                                Radius.circular(10)
+                            )
+                        ) ,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text('Emergency Contact - 3',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold
+                              ),),
+                            Text('Name',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold
+                              ),),
+                            Text(details['emergencyContact3']['name'].toString()),
+                            Text('Phone',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold
+                              ),),
+                            Text(details['emergencyContact3']['phone'].toString()),
+                            Text('Relation',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold
+                              ),),
+                            Text(details['emergencyContact3']['relation'].toString()),
+                          ],
+                        ),
+                      ),
                       ElevatedButton(
                         child: Text('View Location'),
                         onPressed: displayLocation,
