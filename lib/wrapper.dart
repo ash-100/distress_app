@@ -65,7 +65,6 @@ class _WrapperState extends State<Wrapper> {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<User?>(context);
-    return homeAdmin();
     if (user == null) {
       return PageView(controller: _controller, children: [
         Register(changePage: changePage),
