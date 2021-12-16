@@ -40,6 +40,7 @@ dependencies:
   fluttertoast:
   provider: ^6.0.1
   simple_animations: ^4.0.1
+  another_flushbar: ^1.10.28
 
 dev_dependencies:
   flutter_test:

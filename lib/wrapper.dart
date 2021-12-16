@@ -60,26 +60,54 @@ class _WrapperState extends State<Wrapper> {
   Contact? contact1 = Contact(name: '', phone: '', relation: '');
   Contact? contact2 = Contact(name: '', phone: '', relation: '');
   Contact? contact3 = Contact(name: '', phone: '', relation: '');
+  String? bloodGroup;
+  String? phone;
+  void saveBloodGroup(String bloodGroup) {
+    setState(() {
+      this.bloodGroup = bloodGroup;
+    });
+  }
+
+  String? getBloodGroup() {
+    return bloodGroup;
+  }
+
+  void savePhone(String phone) {
+    setState(() {
+      this.phone = phone;
+    });
+  }
+
+  String? getPhone() {
+    return phone;
+  }
 
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<User?>(context);
     if (user == null) {
-      return PageView(controller: _controller, children: [
-        userdetails(changePage: changePage),
-        Register(changePage: changePage),
-        Address(
-            changePage: changePage,
-            setAddress1: saveAddress1,
-            setAddress2: saveAddress2,
-            setAddress3: saveAddress3),
-        EmergencyContact(
-          changePage: changePage,
-          getAddress1: getAddress1,
-          getAddress2: getAddress2,
-          getAddress3: getAddress3,
-        ),
-      ]);
+      return PageView(
+          physics: NeverScrollableScrollPhysics(),
+          controller: _controller,
+          children: [
+            // userdetails(changePage: changePage),
+            Register(changePage: changePage),
+            Address(
+                changePage: changePage,
+                setAddress1: saveAddress1,
+                setAddress2: saveAddress2,
+                setAddress3: saveAddress3,
+                setBloodGroup: saveBloodGroup,
+                setPhone: savePhone),
+            EmergencyContact(
+              changePage: changePage,
+              getAddress1: getAddress1,
+              getAddress2: getAddress2,
+              getAddress3: getAddress3,
+              getBloodGroup: getBloodGroup,
+              getPhone: getPhone,
+            ),
+          ]);
     } else {
       return Home();
     }

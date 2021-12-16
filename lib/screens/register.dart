@@ -2,6 +2,7 @@
 
 import 'package:distress_app/services/auth.dart';
 import 'package:flutter/material.dart';
+import 'package:distress_app/globals.dart' as globals;
 
 class Register extends StatefulWidget {
   Register({this.changePage});
@@ -73,7 +74,10 @@ class _RegisterState extends State<Register> {
                     GestureDetector(
                       onTap: () async {
                         try {
-                          await AuthService().googleSignIn();
+                          dynamic result = await AuthService().googleSignIn();
+                          if (result == 1) {
+                            globals.erroralertbox('Register First!!', context);
+                          }
                         } catch (e) {
                           print(e.toString());
                         }

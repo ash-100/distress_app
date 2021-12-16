@@ -17,6 +17,7 @@ class AuthService {
       if (googleUser != null) {
         dynamic result = await DatabaseService().getUserInfo(googleUser.email);
         if (result.data() == null) {
+          _googleSignIn.signOut();
           return 1;
         }
         final GoogleSignInAuthentication googleAuth =
@@ -30,6 +31,7 @@ class AuthService {
         final User? user = authResult?.user;
         return user;
       } else {
+        _googleSignIn.signOut();
         return 2;
       }
     } catch (e) {
@@ -52,6 +54,7 @@ class AuthService {
       if (googleUser != null) {
         dynamic result = await DatabaseService().getUserInfo(googleUser.email);
         if (result.data() != null) {
+          _googleSignIn.signOut();
           return 1;
         } else {
           dynamic result = await DatabaseService().addUserInfo(
@@ -76,6 +79,7 @@ class AuthService {
         final User? user = authResult?.user;
         return user;
       } else {
+        _googleSignIn.signOut();
         return 2;
       }
     } catch (e) {
