@@ -1,131 +1,293 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:distress_app/services/database.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-class userdetails extends StatefulWidget {
-  final Function? changePage;
-  userdetails({this.changePage});
-
+class userDetails extends StatefulWidget {
+  String email;
+  userDetails(this.email);
   @override
-  State<userdetails> createState() => _userdetails();
+  State<userDetails> createState() => _userDetailsState(this.email);
 }
 
-class _userdetails extends State<userdetails> {
-  late int selectedRadio;
-  @override
-  void initState() {
-    super.initState();
-    selectedRadio = 1;
-  }
+class _userDetailsState extends State<userDetails> {
+  String email;
+  _userDetailsState(this.email);
+  var firestoreInstance = FirebaseFirestore.instance;
+  dynamic details;
 
-  setSelectedRadio(int val) {
-    setState(() {
-      selectedRadio = val;
+  void fetchUserDetails() {
+    firestoreInstance.collection('users').doc(email).get().then((value) {
+      setState(() {
+        print(value.data());
+        details = value.data()!;
+      });
     });
   }
 
-  final userList = ['Student', 'Faculty', 'Staff'];
-  String? dropDownValue;
+  @override
+  void initState() {
+    super.initState();
+    //fetchUserDetails();
+
+    ///whatever you want to run on page build
+  }
+
   @override
   Widget build(BuildContext context) {
+    print(email);
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: Container(
-        padding: EdgeInsets.all(40),
-        child: Column(
-          children: [
-            Text(
-              "Register",
-              style:
-                  TextStyle(color: Color.fromRGBO(49, 39, 79, 1), fontSize: 20),
-            ),
-            const SizedBox(
-              height: 120,
-            ),
-            const TextField(
-              decoration: InputDecoration(
-                hintText: "Name",
-                border: OutlineInputBorder(),
-              ),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            const TextField(
-              decoration: InputDecoration(
-                hintText: "Mobile Number",
-                border: OutlineInputBorder(),
-              ),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            const TextField(
-              decoration: InputDecoration(
-                hintText: "Date of Birth",
-                border: OutlineInputBorder(),
-              ),
-            ),
-            ButtonBar(alignment: MainAxisAlignment.center, children: <Widget>[
-              const Text("Male"),
-              Radio(
-                value: 1,
-                groupValue: selectedRadio,
-                activeColor: Colors.green,
-                onChanged: (val) {
-                  print("Radio $val");
-                  setSelectedRadio(1);
-                  print(selectedRadio);
-                },
-              ),
-              const Text("Female"),
-              Radio(
-                value: 2,
-                groupValue: selectedRadio,
-                activeColor: Colors.green,
-                onChanged: (val) {
-                  print("Radio $val");
-                  setSelectedRadio(2);
-                  print(selectedRadio);
-                },
-              ),
-            ]),
-            Center(
-              child: DropdownButton<String>(
-                items: userList.map(buildMenuItem).toList(),
-                value: dropDownValue,
-                isExpanded: true,
-                onChanged: (value) =>
-                    setState(() => this.dropDownValue = value),
-              ),
-            ),
-            SizedBox(
-              height: 40,
-            ),
-            Container(
-              height: 50,
-              margin: EdgeInsets.symmetric(horizontal: 60),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(50),
-                color: Color.fromRGBO(49, 39, 79, 1),
-              ),
-              child: Center(
-                child: Text(
-                  "Next",
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-            ),
-          ],
+      appBar: AppBar(
+        title: Text('Details'),
+      ),
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: FutureBuilder(
+              future: DatabaseService().getUserInfo(email),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  details = snapshot.data;
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: double.infinity,
+                        decoration:BoxDecoration(
+                          border: Border.all(
+                            color: Colors.blue,
+                            width: 3
+                          ),
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10)
+                          )
+                        ) ,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text('Phone',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold
+                              ),
+                            ),
+                            Text(details['phone'].toString()),
+                            Text('Address1',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold
+                              ),),
+                            Text(details['address1'].toString()),
+                            Text('Address2',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold
+                              ),),
+                            Text(details['address2'].toString()),
+                            Text('Address3',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold
+                              ),),
+                            Text(details['address3'].toString()),
+                            Text('Blood Group',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold
+                              ),),
+                            Text(details['bloodGroup'].toString()),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Container(
+                        width: double.infinity,
+                        decoration:BoxDecoration(
+                            border: Border.all(
+                                color: Colors.blue,
+                                width: 3
+                            ),
+                            borderRadius: BorderRadius.all(
+                                Radius.circular(10)
+                            )
+                        ) ,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text('Emergency Contact - 1',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold
+                              ),),
+                            Text('Name',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold
+                              ),),
+                            Text(details['emergencyContact1']['name'].toString()),
+                            Text('Phone',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold
+                              ),),
+                            Text(details['emergencyContact1']['phone'].toString()),
+                            Text('Relation',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold
+                              ),),
+                            Text(details['emergencyContact1']['relation'].toString()),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Container(
+                        width: double.infinity,
+                        decoration:BoxDecoration(
+                            border: Border.all(
+                                color: Colors.blue,
+                                width: 3
+                            ),
+                            borderRadius: BorderRadius.all(
+                                Radius.circular(10)
+                            )
+                        ) ,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text('Emergency Contact - 2',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold
+                              ),),
+                            Text('Name',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold
+                              ),),
+                            Text(details['emergencyContact2']['name'].toString()),
+                            Text('Phone',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold
+                              ),),
+                            Text(details['emergencyContact2']['phone'].toString()),
+                            Text('Relation',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold
+                              ),),
+                            Text(details['emergencyContact2']['relation'].toString()),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Container(
+                        width: double.infinity,
+                        decoration:BoxDecoration(
+                            border: Border.all(
+                                color: Colors.blue,
+                                width: 3
+                            ),
+                            borderRadius: BorderRadius.all(
+                                Radius.circular(10)
+                            )
+                        ) ,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text('Emergency Contact - 3',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold
+                              ),),
+                            Text('Name',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold
+                              ),),
+                            Text(details['emergencyContact3']['name'].toString()),
+                            Text('Phone',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold
+                              ),),
+                            Text(details['emergencyContact3']['phone'].toString()),
+                            Text('Relation',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold
+                              ),),
+                            Text(details['emergencyContact3']['relation'].toString()),
+                          ],
+                        ),
+                      ),
+                      ElevatedButton(
+                        child: Text('View Location'),
+                        onPressed: displayLocation,
+                      )
+                    ],
+                  );
+                } else {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+              }),
         ),
       ),
     );
   }
 
-  DropdownMenuItem<String> buildMenuItem(String item) => DropdownMenuItem(
-        value: item,
-        child: Text(
-          item,
-          style: TextStyle(fontWeight: FontWeight.normal, fontSize: 18),
-        ),
-      );
+  void displayLocation() {
+    var latitude = '0', longitude = '0';
+    print('email $email ');
+    firestoreInstance
+        .collection('users-help-required')
+        .doc(email.trim())
+        .get()
+        .then((value) {
+      print(value.data());
+      if (value.data().toString().contains('latitude'))
+        latitude = value.data()!['latitude'];
+      if (value.data().toString().contains('longitude'))
+        longitude = value.data()!['longitude'];
+      print(latitude);
+      launchURL(
+          'https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}');
+    });
+  }
+
+  launchURL(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
 }
+
+
+
+//
+// import 'package:flutter/material.dart';
+// import 'package:url_launcher/url_launcher.dart';
+//
+//
+// class userDetails extends StatelessWidget{
+//   final String email;
+//   const userDetails({required Key key, required this.email}) : super(key: key);
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     print(email);
+//     return Scaffold(
+//       body: Column(
+//         children: [
+//           Text('Details'),
+//           ElevatedButton(
+//               onPressed:launchUrl,
+//               child: Text('View Location'))
+//         ],
+//       ),
+//     );
+//   }
+//   launchUrl() async {
+//     var url='https://stackoverflow.com/questions/65883844/flutter-url-launcher-is-not-launching-url-in-release-mode';
+//     if (await canLaunch(url)) {
+//       await launch(url);
+//     } else {
+//       throw 'Could not launch $url';
+//     }
+//   }
+// }
+
