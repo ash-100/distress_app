@@ -43,6 +43,7 @@ dependencies:
   geolocator:
   url_launcher:
   firebase_messaging:
+  another_flushbar: ^1.10.28
 dev_dependencies:
   flutter_test:
     sdk: flutter
