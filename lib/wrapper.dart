@@ -2,6 +2,7 @@ import 'package:distress_app/models.dart';
 import 'package:distress_app/screens/address.dart';
 import 'package:distress_app/screens/contact.dart';
 import 'package:distress_app/screens/home.dart';
+import 'package:distress_app/screens/profile.dart';
 import 'package:distress_app/screens/register.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -65,6 +66,9 @@ class _WrapperState extends State<Wrapper> {
     final user = Provider.of<User?>(context);
     if (user == null) {
       return PageView(controller: _controller, children: [
+        profile(
+          changePage: changePage,
+        ),
         Register(changePage: changePage),
         Address(
             changePage: changePage,
