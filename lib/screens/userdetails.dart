@@ -1,12 +1,25 @@
+// ignore_for_file: use_key_in_widget_constructors, must_be_immutable, camel_case_types, curly_braces_in_flow_control_structures, unnecessary_brace_in_string_interps, avoid_print, file_names
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:distress_app/services/database.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
+
+_launchPhoneURL(String phoneNumber) async {
+  String url = 'tel:' + phoneNumber;
+  if (await canLaunch(url)) {
+    await launch(url);
+  } else {
+    throw 'Could not launch $url';
+  }
+}
 
 class userDetails extends StatefulWidget {
   String email;
   userDetails(this.email);
   @override
+  // ignore: unnecessary_this
   State<userDetails> createState() => _userDetailsState(this.email);
 }
 
@@ -53,43 +66,37 @@ class _userDetailsState extends State<userDetails> {
                     children: [
                       Container(
                         width: double.infinity,
-                        decoration:BoxDecoration(
-                          border: Border.all(
-                            color: Colors.blue,
-                            width: 3
-                          ),
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(10)
-                          )
-                        ) ,
+                        decoration: BoxDecoration(
+                            border: Border.all(color: Colors.blue, width: 3),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10))),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Text('Phone',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold
-                              ),
+                            Text(
+                              'Phone',
+                              style: TextStyle(fontWeight: FontWeight.bold),
                             ),
                             Text(details['phone'].toString()),
-                            Text('Address1',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold
-                              ),),
+                            Text(
+                              'Hostel Address',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
                             Text(details['address1'].toString()),
-                            Text('Address2',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold
-                              ),),
+                            Text(
+                              'Temporary Address',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
                             Text(details['address2'].toString()),
-                            Text('Address3',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold
-                              ),),
+                            Text(
+                              'Permanent Address',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
                             Text(details['address3'].toString()),
-                            Text('Blood Group',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold
-                              ),),
+                            Text(
+                              'Blood Group',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
                             Text(details['bloodGroup'].toString()),
                           ],
                         ),
@@ -99,37 +106,35 @@ class _userDetailsState extends State<userDetails> {
                       ),
                       Container(
                         width: double.infinity,
-                        decoration:BoxDecoration(
-                            border: Border.all(
-                                color: Colors.blue,
-                                width: 3
-                            ),
-                            borderRadius: BorderRadius.all(
-                                Radius.circular(10)
-                            )
-                        ) ,
+                        decoration: BoxDecoration(
+                            border: Border.all(color: Colors.blue, width: 3),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10))),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Text('Emergency Contact - 1',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold
-                              ),),
-                            Text('Name',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold
-                              ),),
-                            Text(details['emergencyContact1']['name'].toString()),
-                            Text('Phone',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold
-                              ),),
-                            Text(details['emergencyContact1']['phone'].toString()),
-                            Text('Relation',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold
-                              ),),
-                            Text(details['emergencyContact1']['relation'].toString()),
+                            Text(
+                              'Emergency Contact - 1',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              'Name',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text(details['emergencyContact1']['name']
+                                .toString()),
+                            Text(
+                              'Phone',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text(details['emergencyContact1']['phone']
+                                .toString()),
+                            Text(
+                              'Relation',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text(details['emergencyContact1']['relation']
+                                .toString()),
                           ],
                         ),
                       ),
@@ -138,83 +143,133 @@ class _userDetailsState extends State<userDetails> {
                       ),
                       Container(
                         width: double.infinity,
-                        decoration:BoxDecoration(
-                            border: Border.all(
-                                color: Colors.blue,
-                                width: 3
-                            ),
-                            borderRadius: BorderRadius.all(
-                                Radius.circular(10)
-                            )
-                        ) ,
+                        decoration: BoxDecoration(
+                            border: Border.all(color: Colors.blue, width: 3),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10))),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Text('Emergency Contact - 2',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold
-                              ),),
-                            Text('Name',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold
-                              ),),
-                            Text(details['emergencyContact2']['name'].toString()),
-                            Text('Phone',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold
-                              ),),
-                            Text(details['emergencyContact2']['phone'].toString()),
-                            Text('Relation',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold
-                              ),),
-                            Text(details['emergencyContact2']['relation'].toString()),
+                            Text(
+                              'Emergency Contact - 2',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              'Name',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text(details['emergencyContact2']['name']
+                                .toString()),
+                            Text(
+                              'Phone',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text(details['emergencyContact2']['phone']
+                                .toString()),
+                            Text(
+                              'Relation',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text(details['emergencyContact2']['relation']
+                                .toString()),
                           ],
                         ),
                       ),
                       SizedBox(
                         height: 5,
                       ),
-                      Container(
-                        width: double.infinity,
-                        decoration:BoxDecoration(
-                            border: Border.all(
-                                color: Colors.blue,
-                                width: 3
-                            ),
-                            borderRadius: BorderRadius.all(
-                                Radius.circular(10)
+                      details['emergencyContact3']['name'] != null ||
+                              details['emergencyContact3']['phone'] != null ||
+                              details['emergencyContact3']['relation'] != null
+                          ? Container(
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                  border:
+                                      Border.all(color: Colors.blue, width: 3),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10))),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'Emergency Contact - 3',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(
+                                    'Name',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(details['emergencyContact3']['name']
+                                      .toString()),
+                                  Text(
+                                    'Phone',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(details['emergencyContact3']['phone']
+                                      .toString()),
+                                  Text(
+                                    'Relation',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(details['emergencyContact3']['relation']
+                                      .toString()),
+                                ],
+                              ),
                             )
-                        ) ,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text('Emergency Contact - 3',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold
-                              ),),
-                            Text('Name',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold
-                              ),),
-                            Text(details['emergencyContact3']['name'].toString()),
-                            Text('Phone',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold
-                              ),),
-                            Text(details['emergencyContact3']['phone'].toString()),
-                            Text('Relation',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold
-                              ),),
-                            Text(details['emergencyContact3']['relation'].toString()),
-                          ],
+                          : SizedBox(height: 1),
+                      GestureDetector(
+                        onTap: () {
+                          displayLocation();
+                        },
+                        child: Container(
+                          height: 50,
+                          margin: EdgeInsets.symmetric(horizontal: 60),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(50),
+                            color: Colors.blue,
+                          ),
+                          child: Center(
+                            child: Text(
+                              "View Location",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
                         ),
                       ),
-                      ElevatedButton(
-                        child: Text('View Location'),
-                        onPressed: displayLocation,
-                      )
+                      // ElevatedButton(
+                      //   child: Text('View Location'),
+                      //   onPressed: displayLocation,
+                      // ),
+                      SizedBox(height: 10),
+                      GestureDetector(
+                        onTap: () {
+                          _launchPhoneURL(details['phone'].toString());
+                        },
+                        child: Container(
+                          height: 50,
+                          margin: EdgeInsets.symmetric(horizontal: 60),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(50),
+                            color: Colors.green,
+                          ),
+                          child: Center(
+                            child: Text(
+                              "Contact Person",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        ),
+                      ),
+                      // ElevatedButton(
+                      //   child: Text('Contact person'),
+                      //   onPressed: () {
+                      //     _launchPhoneURL(details['phone'].toString());
+                      //   },
+                      // )
                     ],
                   );
                 } else {

@@ -5,8 +5,10 @@ import 'package:distress_app/screens/home.dart';
 import 'package:distress_app/screens/homeAdmin.dart';
 import 'package:distress_app/screens/register.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:distress_app/services/database.dart';
 
 class Wrapper extends StatefulWidget {
   const Wrapper({Key? key}) : super(key: key);
@@ -109,7 +111,33 @@ class _WrapperState extends State<Wrapper> {
             ),
           ]);
     } else {
-      return homeAdmin();
+      return StreamProvider<Request?>.value(
+        initialData: null,
+        value: DatabaseService(email: user.email).requestStream,
+        child: FutureBuilder(
+            future: DatabaseService().getUserInfo(user.email),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                dynamic data = snapshot.data;
+
+                if (data.data()['role'] == 'admin') {
+                  return homeAdmin();
+                } else {
+                  return Home();
+                }
+              } else {
+                return Container(
+                  color: Colors.white,
+                  child: Center(
+                    child: SpinKitChasingDots(
+                      color: Color.fromRGBO(49, 39, 79, 1),
+                      size: 50,
+                    ),
+                  ),
+                );
+              }
+            }),
+      );
     }
   }
 }

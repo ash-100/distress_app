@@ -18,6 +18,8 @@ class UserData {
   Contact? emergencyContact1;
   Contact? emergencyContact2;
   Contact? emergencyContact3;
+  String? role;
+  String? category;
   UserData(
       {this.name,
       this.phone,
@@ -28,5 +30,23 @@ class UserData {
       this.email,
       this.emergencyContact1,
       this.emergencyContact2,
-      this.emergencyContact3});
+      this.emergencyContact3,
+      this.role,
+      this.category});
+}
+
+class Request {
+  String? name;
+  String? email;
+  String? latitude;
+  String? longitude;
+  String? help;
+  String? issue;
+  Request(
+      {this.name,
+      this.email,
+      this.latitude,
+      this.longitude,
+      this.help,
+      this.issue});
 }

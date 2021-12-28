@@ -1,11 +1,20 @@
+import 'package:distress_app/models.dart';
+import 'package:distress_app/services/auth.dart';
 import 'package:flutter/services.dart';
 import 'fire.dart';
 import 'medicalEmergency.dart';
 import 'package:flutter/material.dart';
 import 'otherEmergencies.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
 
-var emergencyList = ['Medical Emergency', 'Fire', 'Other'];
+var emergencyList = ['Medical', 'Fire', 'Other'];
+List<Icon> icons = [
+  Icon(Icons.local_hospital),
+  Icon(Icons.fireplace),
+  Icon(Icons.help_outline),
+];
 var i = 0;
 
 class Home extends StatefulWidget {
@@ -79,8 +88,8 @@ class _HomeState extends State<Home> {
         barrierDismissible: false,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('Enable Location Service'),
-            content: Text(
+            title: const Text('Enable Location Service'),
+            content: const Text(
                 'You must enable location access in order to use this app'),
             actions: [
               TextButton(
@@ -107,7 +116,18 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    final User user = Provider.of<User>(context);
+    final Request? request = Provider.of<Request?>(context);
     enableLocation(context);
+    if (request != null) {
+      if (request.help == 'Medical') {
+        return MedicalEmergency();
+      } else if (request.help == 'Fire') {
+        return Fire();
+      } else if (request.help == 'Other') {
+        return OtherEmergencies(issue: request.issue);
+      }
+    }
     return Scaffold(
       appBar: AppBar(
         title: const Text('Home'),
@@ -121,7 +141,20 @@ class _HomeState extends State<Home> {
           return Card(
             child: InkWell(
               child: Center(
-                child: Text(emergencyList[index]),
+                child: Container(
+                  height: 50,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      icons[index],
+                      Text(
+                        emergencyList[index],
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                ),
               ),
               onTap: () {
                 sendMessage(context, index);
@@ -136,11 +169,11 @@ class _HomeState extends State<Home> {
           children: [
             DrawerHeader(
               decoration: BoxDecoration(
-                color: Colors.blue,
+                color: Color.fromRGBO(49, 39, 79, 1),
               ),
               child: Center(
                 child: Text(
-                  'User Name',
+                  user.displayName!,
                   style: TextStyle(
                     color: Colors.white,
                   ),
@@ -163,9 +196,10 @@ class _HomeState extends State<Home> {
             ),
             ListTile(
               title: Text('Sign Out'),
-              onTap: () {
+              onTap: () async {
                 // Must be redirected to profile page
-                Navigator.pop(context);
+                // Navigator.pop(context);
+                await AuthService().logOut();
               },
             ),
           ],

@@ -2,10 +2,34 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:distress_app/models.dart';
 
 class DatabaseService {
+  String? uid;
+  String? email;
+  DatabaseService({this.uid, this.email});
   final CollectionReference users =
       FirebaseFirestore.instance.collection('users');
-  Future getUserInfo(String email) async {
+  final CollectionReference requests =
+      FirebaseFirestore.instance.collection('users-help-required');
+  Future getUserInfo(String? email) async {
     return users.doc(email).get();
+  }
+
+  Stream<Request?> get requestStream {
+    return requests.doc(email).snapshots().map(getrequestFromsnapshot);
+  }
+
+  Request? getrequestFromsnapshot(DocumentSnapshot? snapshot) {
+    dynamic data = snapshot!.data();
+    if (data == null) {
+      return null;
+    }
+    Request request = Request();
+    request.name = data['name'];
+    request.email = email;
+    request.help = data['help'];
+    request.latitude = data['latitude'];
+    request.longitude = data['longitude'];
+    request.issue = data['issue'];
+    return request;
   }
 
   Future addUserInfo(
@@ -39,6 +63,8 @@ class DatabaseService {
         'relation': emergencyContact3.relation
       },
       'bloodGroup': bloodGroup,
+      'role': 'user',
+      'category': [],
     });
   }
 }

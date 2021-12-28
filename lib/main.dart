@@ -46,7 +46,16 @@ class _MyAppState extends State<MyApp> {
     return StreamProvider<User?>.value(
       value: AuthService().user,
       initialData: null,
-      child: const MaterialApp(
+      child: MaterialApp(
+        theme: ThemeData(
+          appBarTheme: AppBarTheme(
+            color: Color.fromRGBO(49, 39, 79, 1),
+            elevation: 0,
+          ),
+          primaryColor: Color.fromRGBO(49, 39, 79, 1),
+        ),
+
+        //theme: ThemeData(primaryColor: Color.fromRGBO(49, 39, 79, 1)),
         debugShowCheckedModeBanner: false,
         //home: SplashScreen(),
         home: Wrapper(),
