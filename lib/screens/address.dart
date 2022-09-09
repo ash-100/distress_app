@@ -6,18 +6,19 @@ import 'package:flutter/material.dart';
 
 class Address extends StatefulWidget {
   final Function? changePage;
-  final Function? setAddress1;
   final Function? setAddress2;
   final Function? setAddress3;
   final Function? setBloodGroup;
   final Function? setPhone;
-  Address(
-      {this.changePage,
-      this.setAddress1,
-      this.setAddress2,
-      this.setAddress3,
-      this.setBloodGroup,
-      this.setPhone});
+  final Function? setName;
+  Address({
+    this.changePage,
+    this.setAddress2,
+    this.setAddress3,
+    this.setBloodGroup,
+    this.setPhone,
+    this.setName,
+  });
 
   @override
   State<Address> createState() => _AddressState();
@@ -25,10 +26,14 @@ class Address extends StatefulWidget {
 
 class _AddressState extends State<Address> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  String? _bloodGroup;
+  List<String> groups = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           backgroundColor: Colors.white,
           leading: IconButton(
@@ -43,13 +48,12 @@ class _AddressState extends State<Address> {
           ),
           elevation: 0,
         ),
-        resizeToAvoidBottomInset: false,
         backgroundColor: Colors.white,
         body: Center(
           child: Container(
             width: double.infinity,
             height: double.infinity,
-            //height: MediaQuery.of(context).size.height,
+            // height: MediaQuery.of(context).size.height,
             padding: const EdgeInsets.fromLTRB(25, 0, 25, 25),
             child: Form(
               key: _formKey,
@@ -57,15 +61,37 @@ class _AddressState extends State<Address> {
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Expanded(
-                    child: Align(
-                      alignment: FractionalOffset.center,
-                      child: const Text('User Details',
-                          style: TextStyle(
-                              color: Color.fromRGBO(49, 39, 79, 1),
-                              fontSize: 30,
-                              fontWeight: FontWeight.bold)),
+                  Align(
+                    alignment: FractionalOffset.center,
+                    child: const Text('User Details',
+                        style: TextStyle(
+                            color: Color.fromRGBO(188, 51, 51, 1),
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold)),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  TextFormField(
+                    decoration: InputDecoration(
+                      prefixIcon: Icon(
+                        Icons.person,
+                        color: Colors.blue,
+                      ),
+                      isDense: true,
+                      labelText: 'Full Name',
+                      hintText: 'Full Name',
+                      border: OutlineInputBorder(),
+                      suffixText: '*',
+                      suffixStyle: TextStyle(
+                        color: Colors.red,
+                      ),
                     ),
+                    onChanged: (value) {
+                      widget.setName!(value);
+                    },
+                    validator: (value) =>
+                        value!.isEmpty ? 'Enter Full Name' : null,
                   ),
                   const SizedBox(
                     height: 20,
@@ -94,51 +120,60 @@ class _AddressState extends State<Address> {
                   const SizedBox(
                     height: 20,
                   ),
-                  TextFormField(
-                    decoration: InputDecoration(
-                      prefixIcon: Icon(
-                        Icons.bloodtype,
-                        color: Colors.red,
+                  // TextFormField(
+                  //   decoration: InputDecoration(
+                  //     prefixIcon: Icon(
+                  //       Icons.bloodtype,
+                  //       color: Colors.red,
+                  //     ),
+                  //     isDense: true,
+                  //     labelText: 'Blood Group',
+                  //     hintText: 'Blood Group',
+                  //     border: OutlineInputBorder(),
+                  //     suffixText: '*',
+                  //     suffixStyle: TextStyle(
+                  //       color: Colors.red,
+                  //     ),
+                  //   ),
+                  //   onChanged: (value) {
+                  //     widget.setBloodGroup!(value);
+                  //   },
+                  //   validator: (value) =>
+                  //       value!.isEmpty ? 'Enter Blood Group' : null,
+                  // ),
+                  DropdownButtonFormField<String>(
+                      validator: ((value) {
+                        value == "" ? 'Select Blood Group' : null;
+                      }),
+                      decoration: InputDecoration(
+                        prefixIcon: Icon(
+                          Icons.bloodtype,
+                          color: Colors.red,
+                        ),
+                        isDense: true,
+                        labelText: 'Blood Group',
+                        hintText: 'Blood Group',
+                        border: OutlineInputBorder(),
+                        suffixText: '*',
+                        suffixStyle: TextStyle(
+                          color: Colors.red,
+                        ),
+                        errorStyle:
+                            TextStyle(color: Colors.redAccent, fontSize: 16.0),
                       ),
-                      isDense: true,
-                      labelText: 'Blood Group',
-                      hintText: 'Blood Group',
-                      border: OutlineInputBorder(),
-                      suffixText: '*',
-                      suffixStyle: TextStyle(
-                        color: Colors.red,
-                      ),
-                    ),
-                    onChanged: (value) {
-                      widget.setBloodGroup!(value);
-                    },
-                    validator: (value) =>
-                        value!.isEmpty ? 'Enter Blood Group' : null,
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  TextFormField(
-                    keyboardType: TextInputType.multiline,
-                    minLines: 1,
-                    maxLines: 3,
-                    decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.apartment, color: Colors.blue),
-                      isDense: true,
-                      labelText: 'Hostel Address',
-                      hintText: 'Enter Address',
-                      border: OutlineInputBorder(),
-                      suffixText: '*',
-                      suffixStyle: TextStyle(
-                        color: Colors.red,
-                      ),
-                    ),
-                    onChanged: (value) {
-                      widget.setAddress1!(value);
-                    },
-                    validator: (value) =>
-                        value!.isEmpty ? 'Enter Address1' : null,
-                  ),
+                      // dropdownColor: Colors.blueAccent,
+                      value: _bloodGroup,
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          _bloodGroup = newValue!;
+                          widget.setBloodGroup!(newValue);
+                        });
+                      },
+                      items: groups.map((String item) {
+                        return DropdownMenuItem<String>(
+                            child: Text(item), value: item);
+                      }).toList()),
+
                   const SizedBox(
                     height: 20,
                   ),
@@ -202,7 +237,7 @@ class _AddressState extends State<Address> {
                           margin: EdgeInsets.symmetric(horizontal: 60),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(50),
-                            color: Color.fromRGBO(49, 39, 79, 1),
+                            color: Color.fromRGBO(188, 51, 51, 1),
                           ),
                           child: Center(
                             child: Text(

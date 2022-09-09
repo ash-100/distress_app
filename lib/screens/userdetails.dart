@@ -1,42 +1,27 @@
 // ignore_for_file: use_key_in_widget_constructors, must_be_immutable, camel_case_types, curly_braces_in_flow_control_structures, unnecessary_brace_in_string_interps, avoid_print, file_names
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:distress_app/services/database.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 
-_launchPhoneURL(String phoneNumber) async {
-  String url = 'tel:' + phoneNumber;
-  if (await canLaunch(url)) {
-    await launch(url);
-  } else {
-    throw 'Could not launch $url';
-  }
-}
-
 class userDetails extends StatefulWidget {
   String email;
-  userDetails(this.email);
+  String latitude;
+  String longitude;
+  userDetails(this.email, this.latitude, this.longitude);
   @override
   // ignore: unnecessary_this
-  State<userDetails> createState() => _userDetailsState(this.email);
+  State<userDetails> createState() =>
+      _userDetailsState(this.email, this.latitude, this.longitude);
 }
 
 class _userDetailsState extends State<userDetails> {
   String email;
-  _userDetailsState(this.email);
-  var firestoreInstance = FirebaseFirestore.instance;
+  String latitude;
+  String longitude;
+  _userDetailsState(this.email, this.latitude, this.longitude);
   dynamic details;
-
-  void fetchUserDetails() {
-    firestoreInstance.collection('users').doc(email).get().then((value) {
-      setState(() {
-        print(value.data());
-        details = value.data()!;
-      });
-    });
-  }
 
   @override
   void initState() {
@@ -48,7 +33,6 @@ class _userDetailsState extends State<userDetails> {
 
   @override
   Widget build(BuildContext context) {
-    print(email);
     return Scaffold(
       appBar: AppBar(
         title: Text('Details'),
@@ -57,7 +41,7 @@ class _userDetailsState extends State<userDetails> {
         child: Padding(
           padding: const EdgeInsets.all(10.0),
           child: FutureBuilder(
-              future: DatabaseService().getUserInfo(email),
+              future: DatabaseService(email: email).getUserInfo(),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   details = snapshot.data;
@@ -65,165 +49,228 @@ class _userDetailsState extends State<userDetails> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Container(
+                        padding: EdgeInsets.all(10),
                         width: double.infinity,
                         decoration: BoxDecoration(
-                            border: Border.all(color: Colors.blue, width: 3),
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                  color: Colors.grey.shade400,
+                                  spreadRadius: 1,
+                                  blurRadius: 6)
+                            ],
                             borderRadius:
                                 BorderRadius.all(Radius.circular(10))),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Text(
-                              'Phone',
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                            SizedBox(
+                              height: 5,
                             ),
-                            Text(details['phone'].toString()),
-                            Text(
-                              'Hostel Address',
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                            Text(details['address1'].toString()),
-                            Text(
-                              'Temporary Address',
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                            Text(details['address2'].toString()),
-                            Text(
-                              'Permanent Address',
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                            Text(details['address3'].toString()),
-                            Text(
-                              'Blood Group',
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                            Text(details['bloodGroup'].toString()),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Container(
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                            border: Border.all(color: Colors.blue, width: 3),
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(10))),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              'Emergency Contact - 1',
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                            Text(
-                              'Name',
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                            Text(details['emergencyContact1']['name']
-                                .toString()),
-                            Text(
-                              'Phone',
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                            Text(details['emergencyContact1']['phone']
-                                .toString()),
-                            Text(
-                              'Relation',
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                            Text(details['emergencyContact1']['relation']
-                                .toString()),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Container(
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                            border: Border.all(color: Colors.blue, width: 3),
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(10))),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              'Emergency Contact - 2',
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                            Text(
-                              'Name',
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                            Text(details['emergencyContact2']['name']
-                                .toString()),
-                            Text(
-                              'Phone',
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                            Text(details['emergencyContact2']['phone']
-                                .toString()),
-                            Text(
-                              'Relation',
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                            Text(details['emergencyContact2']['relation']
-                                .toString()),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      details['emergencyContact3']['name'] != null ||
-                              details['emergencyContact3']['phone'] != null ||
-                              details['emergencyContact3']['relation'] != null
-                          ? Container(
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                  border:
-                                      Border.all(color: Colors.blue, width: 3),
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10))),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    'Emergency Contact - 3',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
+                            Align(
+                                alignment: Alignment.centerLeft,
+                                child: RichText(
+                                  text: TextSpan(
+                                    // text: 'Hello ',
+                                    style: TextStyle(
+                                      fontSize: 17,
+                                      color: Colors.black,
+                                    ),
+                                    children: <TextSpan>[
+                                      TextSpan(
+                                          text: 'Name: ',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold)),
+                                      TextSpan(text: details['name']),
+                                    ],
                                   ),
-                                  Text(
-                                    'Name',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
+                                )),
+                            Align(
+                                alignment: Alignment.centerLeft,
+                                child: RichText(
+                                  text: TextSpan(
+                                    // text: 'Hello ',
+                                    style: TextStyle(
+                                      fontSize: 17,
+                                      color: Colors.black,
+                                    ),
+                                    children: <TextSpan>[
+                                      TextSpan(
+                                          text: 'Phone: ',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold)),
+                                      TextSpan(text: details['mobile_no']),
+                                    ],
                                   ),
-                                  Text(details['emergencyContact3']['name']
-                                      .toString()),
-                                  Text(
-                                    'Phone',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
+                                )),
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: RichText(
+                                text: TextSpan(
+                                  // text: 'Hello ',
+                                  style: TextStyle(
+                                    fontSize: 17,
+                                    color: Colors.black,
                                   ),
-                                  Text(details['emergencyContact3']['phone']
-                                      .toString()),
-                                  Text(
-                                    'Relation',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(details['emergencyContact3']['relation']
-                                      .toString()),
-                                ],
+                                  children: <TextSpan>[
+                                    TextSpan(
+                                        text: 'Temporary address: ',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold)),
+                                    TextSpan(
+                                        text: details['temporary_address']),
+                                  ],
+                                ),
                               ),
-                            )
-                          : SizedBox(height: 1),
+                            ),
+                            Align(
+                                alignment: Alignment.centerLeft,
+                                child: RichText(
+                                  text: TextSpan(
+                                    // text: 'Hello ',
+                                    style: TextStyle(
+                                      fontSize: 17,
+                                      color: Colors.black,
+                                    ),
+                                    children: <TextSpan>[
+                                      TextSpan(
+                                          text: 'Permanent address: ',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold)),
+                                      TextSpan(
+                                          text: details['permanent_address']),
+                                    ],
+                                  ),
+                                )),
+                            Align(
+                                alignment: Alignment.centerLeft,
+                                child: RichText(
+                                  text: TextSpan(
+                                    // text: 'Hello ',
+                                    style: TextStyle(
+                                      fontSize: 17,
+                                      color: Colors.black,
+                                    ),
+                                    children: <TextSpan>[
+                                      TextSpan(
+                                          text: 'Blood group: ',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold)),
+                                      TextSpan(text: details['blood_group']),
+                                    ],
+                                  ),
+                                )),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      ListView.builder(
+                          shrinkWrap: true,
+                          //padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+                          itemCount: details['emergency_contact'].length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return Column(
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.all(10),
+                                  margin: EdgeInsets.fromLTRB(0, 7, 0, 7),
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      boxShadow: [
+                                        BoxShadow(
+                                            color: Colors.grey.shade400,
+                                            spreadRadius: 1,
+                                            blurRadius: 6)
+                                      ],
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(10))),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        'Emergency Contact - ${index + 1}',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: RichText(
+                                            text: TextSpan(
+                                              // text: 'Hello ',
+                                              style: TextStyle(
+                                                fontSize: 17,
+                                                color: Colors.black,
+                                              ),
+                                              children: <TextSpan>[
+                                                TextSpan(
+                                                    text: 'Name: ',
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold)),
+                                                TextSpan(
+                                                    text: details[
+                                                            'emergency_contact']
+                                                        [index]['name']),
+                                              ],
+                                            ),
+                                          )),
+                                      Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: RichText(
+                                            text: TextSpan(
+                                              // text: 'Hello ',
+                                              style: TextStyle(
+                                                fontSize: 17,
+                                                color: Colors.black,
+                                              ),
+                                              children: <TextSpan>[
+                                                TextSpan(
+                                                    text: 'Phone: ',
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold)),
+                                                TextSpan(
+                                                    text: details[
+                                                            'emergency_contact']
+                                                        [index]['mobile_no']),
+                                              ],
+                                            ),
+                                          )),
+                                      Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: RichText(
+                                            text: TextSpan(
+                                              // text: 'Hello ',
+                                              style: TextStyle(
+                                                fontSize: 17,
+                                                color: Colors.black,
+                                              ),
+                                              children: <TextSpan>[
+                                                TextSpan(
+                                                    text: 'Relation: ',
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold)),
+                                                TextSpan(
+                                                    text: details[
+                                                            'emergency_contact']
+                                                        [index]['relation']),
+                                              ],
+                                            ),
+                                          )),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            );
+                          }),
                       GestureDetector(
                         onTap: () {
-                          displayLocation();
+                          displayLocation(latitude, longitude);
                         },
                         child: Container(
                           height: 50,
@@ -240,14 +287,11 @@ class _userDetailsState extends State<userDetails> {
                           ),
                         ),
                       ),
-                      // ElevatedButton(
-                      //   child: Text('View Location'),
-                      //   onPressed: displayLocation,
-                      // ),
                       SizedBox(height: 10),
                       GestureDetector(
                         onTap: () {
-                          _launchPhoneURL(details['phone'].toString());
+                          FlutterPhoneDirectCaller.callNumber(
+                              '91' + details['mobile_no']);
                         },
                         child: Container(
                           height: 50,
@@ -264,12 +308,6 @@ class _userDetailsState extends State<userDetails> {
                           ),
                         ),
                       ),
-                      // ElevatedButton(
-                      //   child: Text('Contact person'),
-                      //   onPressed: () {
-                      //     _launchPhoneURL(details['phone'].toString());
-                      //   },
-                      // )
                     ],
                   );
                 } else {
@@ -283,28 +321,14 @@ class _userDetailsState extends State<userDetails> {
     );
   }
 
-  void displayLocation() {
-    var latitude = '0', longitude = '0';
-    print('email $email ');
-    firestoreInstance
-        .collection('users-help-required')
-        .doc(email.trim())
-        .get()
-        .then((value) {
-      print(value.data());
-      if (value.data().toString().contains('latitude'))
-        latitude = value.data()!['latitude'];
-      if (value.data().toString().contains('longitude'))
-        longitude = value.data()!['longitude'];
-      print(latitude);
-      launchURL(
-          'https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}');
-    });
+  void displayLocation(String latitude, String longitude) {
+    launchURL(
+        'https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}');
   }
 
   launchURL(String url) async {
-    if (await canLaunch(url)) {
-      await launch(url);
+    if (await canLaunchUrl(Uri.parse(url))) {
+      await launchUrl(Uri.parse(url));
     } else {
       throw 'Could not launch $url';
     }
