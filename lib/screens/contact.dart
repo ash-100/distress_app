@@ -44,29 +44,29 @@ class _EmergencyContactState extends State<EmergencyContact> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: loading
-          ? globals.Loading()
-          : Consumer<RequiredHelp>(
-              builder: (context, RequiredHelp notifier, _) {
-              return Scaffold(
-                  key: _scaffoldKey,
-                  resizeToAvoidBottomInset: false,
-                  backgroundColor: Colors.white,
-                  appBar: AppBar(
-                    backgroundColor: Colors.white,
-                    leading: IconButton(
-                      icon: Icon(
-                        Icons.arrow_back,
-                        color: Colors.black,
-                        size: 30,
-                      ),
-                      onPressed: () {
-                        widget.changePage!(1);
-                      },
-                    ),
-                    elevation: 0,
-                  ),
-                  body: Form(
+      child:
+          Consumer<RequiredHelp>(builder: (context, RequiredHelp notifier, _) {
+        return Scaffold(
+            key: _scaffoldKey,
+            resizeToAvoidBottomInset: false,
+            backgroundColor: Colors.white,
+            appBar: AppBar(
+              backgroundColor: Colors.white,
+              leading: IconButton(
+                icon: Icon(
+                  Icons.arrow_back,
+                  color: Colors.black,
+                  size: 30,
+                ),
+                onPressed: () {
+                  widget.changePage!(1);
+                },
+              ),
+              elevation: 0,
+            ),
+            body: loading
+                ? globals.Loading()
+                : Form(
                     key: _formKey,
                     child: Container(
                       padding: EdgeInsets.fromLTRB(25, 0, 25, 25),
@@ -235,6 +235,9 @@ class _EmergencyContactState extends State<EmergencyContact> {
                                 //print(context);
 
                                 //print("hii");
+                                setState(() {
+                                  loading = true;
+                                });
                                 try {
                                   final GoogleSignInAccount? googleUser =
                                       await AuthService().signIn();
@@ -243,18 +246,18 @@ class _EmergencyContactState extends State<EmergencyContact> {
                                             email: googleUser.email)
                                         .getUserInfo();
                                     if (result != null) {
+                                      setState(() {
+                                        loading = false;
+                                      });
                                       AuthService().logOut();
 
                                       globals.erroralertbox(
                                           'You have Already Registered!!',
-                                          _scaffoldKey.currentContext!);
+                                          context);
                                       widget.changePage!(0);
 
                                       //
                                     } else {
-                                      setState(() {
-                                        loading = true;
-                                      });
                                       dynamic result = await DatabaseService(
                                               email: googleUser.email)
                                           .addUserInfo(
@@ -319,7 +322,7 @@ class _EmergencyContactState extends State<EmergencyContact> {
                       ),
                     ),
                   ));
-            }),
+      }),
     );
   }
 }
